@@ -86,6 +86,19 @@ def find_rest_in_building(building_num, db):
     conn = sqlite3.connect(db)
     cur = conn.cursor()
 
+    cur.execute('SELECT name, rating FROM restaurants JOIN buildings ON restaurants.building_id = buildings.id WHERE buildings.building =%s' % building_num)
+    buildings = []
+    for row in cur:
+        buildings.append(row)
+
+    buildings = sorted(buildings, key=lambda i: i[1], reverse=True)
+    rest = []
+    for tup in buildings:
+        rest.append(tup[0])
+
+    return rest
+
+
 # EXTRA CREDIT
 
 
