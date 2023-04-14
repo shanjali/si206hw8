@@ -57,17 +57,22 @@ def plot_rest_categories(db):
         dicti[row[0]] = counts[ind][1]
         ind += 1
 
+    cur.close()
+
     dicti = dict(sorted(dicti.items(), key = lambda item: item[0]))
 
-    x_axis = dicti.keys()
-    y_axis = dicti.values()
+    plot_dict = dict(sorted(dicti.items(), key = lambda item: item[1], reverse=False))
 
-    plt.figure(figsize=(40, 10)) 
-    plt.bar(x_axis, y_axis)
-    plt.title('restaurant category occurences')
-    plt.xlabel('restaurant category')
-    plt.ylabel('number of occurences')
+    x_axis = list(plot_dict.keys())
+    y_axis = plot_dict.values()
+
+    plt.figure(figsize = (18, 10))
+    plt.barh(x_axis, y_axis)
+    plt.title('Types of Restaurant on South University Avenue')
+    plt.xlabel('Number of Restaurants')
+    plt.ylabel('Restaurant Categories')
     plt.savefig("bar_plot.png")
+    plt.close()
 
     return dicti
 
@@ -78,7 +83,8 @@ def find_rest_in_building(building_num, db):
     restaurant names. You need to find all the restaurant names which are in the specific building. The restaurants 
     should be sorted by their rating from highest to lowest.
     '''
-    pass
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
 
 # EXTRA CREDIT
 
