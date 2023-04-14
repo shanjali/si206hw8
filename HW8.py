@@ -1,12 +1,13 @@
-# Your name: 
-# Your student id:
-# Your email:
-# List who you have worked with on this homework:
+# Your name: Anjali Sharma
+# Your student id: 92125435
+# Your email: shanjali@umich.edu
+# List who you have worked with on this homework: N/A
 
 import matplotlib.pyplot as plt
 import os
 import sqlite3
 import unittest
+
 
 def load_rest_data(db):
     """
@@ -15,7 +16,22 @@ def load_rest_data(db):
     and each inner key is a dictionary, where the key:value pairs should be the category, 
     building, and rating for the restaurant.
     """
-    pass
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
+
+    dict = {}
+
+    cur.execute('SELECT name, categories.category, buildings.building, rating FROM restaurants JOIN categories ON restaurants.category_id = categories.id JOIN buildings ON restaurants.building_id = buildings.id')
+    for row in cur:
+        inner = {}
+        inner['category'] = row[1]
+        inner['building'] = row[2]
+        inner['rating'] = row[3]
+
+        dict[row[0]] = inner
+
+    return dict
+
 
 def plot_rest_categories(db):
     """
@@ -25,6 +41,7 @@ def plot_rest_categories(db):
     """
     pass
 
+
 def find_rest_in_building(building_num, db):
     '''
     This function accepts the building number and the filename of the database as parameters and returns a list of 
@@ -33,8 +50,10 @@ def find_rest_in_building(building_num, db):
     '''
     pass
 
-#EXTRA CREDIT
-def get_highest_rating(db): #Do this through DB as well
+# EXTRA CREDIT
+
+
+def get_highest_rating(db):  # Do this through DB as well
     """
     This function return a list of two tuples. The first tuple contains the highest-rated restaurant category 
     and the average rating of the restaurants in that category, and the second tuple contains the building number 
@@ -47,9 +66,12 @@ def get_highest_rating(db): #Do this through DB as well
     """
     pass
 
-#Try calling your functions here
+# Try calling your functions here
+
+
 def main():
     pass
+
 
 class TestHW8(unittest.TestCase):
     def setUp(self):
@@ -79,7 +101,8 @@ class TestHW8(unittest.TestCase):
     def test_load_rest_data(self):
         rest_data = load_rest_data('South_U_Restaurants.db')
         self.assertIsInstance(rest_data, dict)
-        self.assertEqual(rest_data['M-36 Coffee Roasters Cafe'], self.rest_dict)
+        self.assertEqual(
+            rest_data['M-36 Coffee Roasters Cafe'], self.rest_dict)
         self.assertEqual(len(rest_data), 25)
 
     def test_plot_rest_categories(self):
@@ -97,6 +120,7 @@ class TestHW8(unittest.TestCase):
     def test_get_highest_rating(self):
         highest_rating = get_highest_rating('South_U_Restaurants.db')
         self.assertEqual(highest_rating, self.highest_rating)
+
 
 if __name__ == '__main__':
     main()
